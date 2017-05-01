@@ -1,0 +1,10 @@
+name: shiny-app
+title: shiny-app
+account: georgevu
+server: shinyapps.io
+appId: 176762
+bundleId: 810161
+url: https://georgevu.shinyapps.io/shiny-app/
+when: 1493602579.72825
+asMultiple: FALSE
+asStatic: FALSE

@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#\n# This is the user-interface definition of a Shiny web application. You can\n# run the application by clicking 'Run App' above.\n#\n# Find out more about building applications with Shiny here:\n# \n#    http://shiny.rstudio.com/\n#\n\nlibrary(shiny)\nlibrary(ggplot2)\n# Define UI for application that draws a histogram\nshinyUI(fluidPage(\n  \n  # Application title\n  titlePanel(\"How much should I pay for a diamond?\"),\n  \n  # Sidebar with a slider input for number of bins \n  sidebarLayout(\n    sidebarPanel(\n       sliderInput(\"carats\",\n                   \"Number of carats:\",\n                   min = min(diamonds$carat),\n                   max = max(diamonds$carat),\n                   value = 1),\n       selectInput(\"clarity\", \"Choose Clarity\", choices=unique(diamonds$clarity)),\n       selectInput(\"color\", \"Choose Color\", choices=sort(unique(diamonds$color))),\n       selectInput(\"cut\", \"Choose Cut\", choices=unique(diamonds$cut)),\n       submitButton(\"Submit\"),\n       hr(),\n       helpText(\"How much should I pay for my diamond?\", br(), \n                \"You can calculate what a diamond may cost according to the diamonds dataset available in ggplot2\", br(),\n                \"1. Choose the carat weight by sliding the carats slider\",br(),\n                \"2. Choose the color of the diamond by selecting the color from the drop down list\",br(),\n                \"3. Choose the clarity of the diamond by selecting the clarity from the drop down list\",br(),\n                \"4. Choose the cut of the diamond by selecting the cut from the drop down list\",br(),\n                \"5. When ready click the submit button to get the price estimate.\")\n    ),\n    \n    # Show a plot of the generated distribution\n    mainPanel(\n       plotOutput(\"distPlot\"),\n       textOutput(\"diamondPrice\")\n    )\n  )\n))\n",
+    "created" : 1493580512752.000,
+    "dirty" : false,
+    "encoding" : "ISO8859-1",
+    "folds" : "",
+    "hash" : "1122800214",
+    "id" : "3DF69044",
+    "lastKnownWriteTime" : 1493602565,
+    "last_content_update" : 1493602565501,
+    "path" : "~/R/shiny-project/shiny-app/ui.R",
+    "project_path" : "shiny-app/ui.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

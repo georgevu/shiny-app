@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "Price Your Diamond\n======================================================\nauthor: George Vu \ndate: 4/30/2017\nautosize: true\n\nIntroduction\n========================================================\nHave you ever wondered how much you should actually pay for a diamond?\n\nDo you understand how carat, cut, clarity, and color affect the price of a diamond?  \n\nThe diamond pricing app will give you a rough idea of what a diamond should cost.\n\nThe 4 C's of Diamond Quality\n========================================================\n<table border=\"0\">\n<tr>\n  <td>\n    <img src=\"Cut.png\" width=\"400\" height=\"200\">\n  </td>\n  <td>\n    <img src=\"Color.png\" width=\"400\" height=\"200\">\n  </td>\n</tr>\n<tr>\n  <td>\n  The better a diamond is cut, the more sparkle it will have.\n  </td>\n  <td>\n  The more colorless the diamond, the higher quality grade it will receive.\n  </td>\n<tr>\n  <td>\n    <img src=\"Clarity.png\" width=\"400\" height=\"200\">\n  </td>\n  <td>\n    <img src=\"Carat.jpg\" width=\"400\" height=\"200\">\n  </td>\n</tr>\n<tr>\n  <td>\n  Diamonds with few or no imperfections receive the highest clarity grades.\n  </td>\n  <td>\n  Carat is specifically a measure of a diamond's weight.\n  </td>\n</table>\n  </td>\n</tr>\n</table>\n\nThe Diamonds Dataset\n========================================================\n\n```{r echo=FALSE}\nlibrary(ggplot2)\ncolor <- sort(unique(diamonds$color))\nclarity <- unique(diamonds$clarity)\ncut <- unique(diamonds$cut)\n```\n- The diamonds dataset contains prices and other attributes of almost 54,000 diamonds.\n\n- Carat Range `r min(diamonds$carat)` to `r max(diamonds$carat)`\n\n- Color Range `r color[1]` to `r color[length(color)]`\n\n- Clarity Range: `r clarity[1]` to `r clarity[length(clarity)]`\n\n- Cut Range: `r cut[1]` to `r cut[length(cut)]`\n\nHow the Dimaond Pricing App Works\n========================================================\n- The diamond pricing application runs in a web browser and takes the 4 C's inputs and estimates the price of the diamond according to the Diamonds dataset.\n\n- The application models the prices against the cut, clarity, color, and carat and outputs a predicted price based on your input.\n\n\nThe Diamond Pricing Data\n========================================================\n```{r echo=FALSE, out.height=\"600px\",out.width=\"800px\"}\nlibrary(scales)\ncuberoot_trans = function() trans_new('cuberoot',\n                                      transform = function(x) x^(1/3),\n                                      inverse = function(x) x^3)  \n\nm1 <- lm(I(log10(price)) ~ I(carat^(1/3)), data = diamonds)\nm2 <- update(m1,~ . +carat)\nm3 <- update(m2,~ . +cut)\nm4 <- update(m3,~ . +color)\nm5 <- update(m4,~ . +clarity)\nggplot(aes(x = carat, y = price), data = diamonds) + \n      geom_point(alpha = 0.5, size = 1, position = 'jitter', aes(color=color)) +\n      scale_color_brewer(type = 'div',\n                         guide = guide_legend(title = 'Color', reverse = F,\n                                              override.aes = list(alpha = 1, size = 2))) +                         \n      scale_x_continuous(trans = cuberoot_trans(), limits = c(0.2, 3),\n                         breaks = c(0.2, 0.5, 1, 2, 3)) + \n      scale_y_continuous(trans = log10_trans(), limits = c(350, 15000),\n                         breaks = c(350, 1000, 5000, 10000, 15000)) +\n      ggtitle('Price (log10) by Cube-Root of Carat and Color')\n```",
+    "created" : 1493596339982.000,
+    "dirty" : false,
+    "encoding" : "ISO8859-1",
+    "folds" : "",
+    "hash" : "2842863472",
+    "id" : "A36A61DA",
+    "lastKnownWriteTime" : 1493602068,
+    "last_content_update" : 1493602068229,
+    "path" : "~/R/shiny-project/diamonds-presentation.Rpres",
+    "project_path" : "diamonds-presentation.Rpres",
+    "properties" : {
+        "docOutlineVisible" : "0"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_presentation"
+}

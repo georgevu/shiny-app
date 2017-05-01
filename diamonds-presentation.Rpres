@@ -1,0 +1,102 @@
+Price Your Diamond
+======================================================
+author: George Vu 
+date: 4/30/2017
+autosize: true
+
+Introduction
+========================================================
+Have you ever wondered how much you should actually pay for a diamond?
+
+Do you understand how carat, cut, clarity, and color affect the price of a diamond?  
+
+The diamond pricing app will give you a rough idea of what a diamond should cost.
+
+The 4 C's of Diamond Quality
+========================================================
+<table border="0">
+<tr>
+  <td>
+    <img src="Cut.png" width="400" height="200">
+  </td>
+  <td>
+    <img src="Color.png" width="400" height="200">
+  </td>
+</tr>
+<tr>
+  <td>
+  The better a diamond is cut, the more sparkle it will have.
+  </td>
+  <td>
+  The more colorless the diamond, the higher quality grade it will receive.
+  </td>
+<tr>
+  <td>
+    <img src="Clarity.png" width="400" height="200">
+  </td>
+  <td>
+    <img src="Carat.jpg" width="400" height="200">
+  </td>
+</tr>
+<tr>
+  <td>
+  Diamonds with few or no imperfections receive the highest clarity grades.
+  </td>
+  <td>
+  Carat is specifically a measure of a diamond's weight.
+  </td>
+</table>
+  </td>
+</tr>
+</table>
+
+The Diamonds Dataset
+========================================================
+
+```{r echo=FALSE}
+library(ggplot2)
+color <- sort(unique(diamonds$color))
+clarity <- unique(diamonds$clarity)
+cut <- unique(diamonds$cut)
+```
+- The diamonds dataset contains prices and other attributes of almost 54,000 diamonds.
+
+- Carat Range `r min(diamonds$carat)` to `r max(diamonds$carat)`
+
+- Color Range `r color[1]` to `r color[length(color)]`
+
+- Clarity Range: `r clarity[1]` to `r clarity[length(clarity)]`
+
+- Cut Range: `r cut[1]` to `r cut[length(cut)]`
+
+How the Dimaond Pricing App Works
+========================================================
+- The diamond pricing application runs in a web browser and takes the 4 C's inputs and estimates the price of the diamond according to the Diamonds dataset.
+
+- The application models the prices against the cut, clarity, color, and carat and outputs a predicted price based on your input.
+
+
+The Diamond Pricing Data
+========================================================
+```{r echo=FALSE, out.height="600px",out.width="800px"}
+library(scales)
+cuberoot_trans = function() trans_new('cuberoot',
+                                      transform = function(x) x^(1/3),
+                                      inverse = function(x) x^3)  
+
+m1 <- lm(I(log10(price)) ~ I(carat^(1/3)), data = diamonds)
+m2 <- update(m1,~ . +carat)
+m3 <- update(m2,~ . +cut)
+m4 <- update(m3,~ . +color)
+m5 <- update(m4,~ . +clarity)
+ggplot(aes(x = carat, y = price), data = diamonds) + 
+      geom_point(alpha = 0.5, size = 1, position = 'jitter', aes(color=color)) +
+      scale_color_brewer(type = 'div',
+                         guide = guide_legend(title = 'Color', reverse = F,
+                                              override.aes = list(alpha = 1, size = 2))) +                         
+      scale_x_continuous(trans = cuberoot_trans(), limits = c(0.2, 3),
+                         breaks = c(0.2, 0.5, 1, 2, 3)) + 
+      scale_y_continuous(trans = log10_trans(), limits = c(350, 15000),
+                         breaks = c(350, 1000, 5000, 10000, 15000)) +
+      ggtitle('Price (log10) by Cube-Root of Carat and Color')
+```
